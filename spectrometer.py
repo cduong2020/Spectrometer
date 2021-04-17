@@ -117,6 +117,9 @@ def closest(lst, K):
 # https://www.scitepress.org/Papers/2014/50872/50872.pdf
 def captureSpectrum():
     cam = cv2.VideoCapture(0)       # Selects Camera Input 0, 1, 2...
+    
+    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
     img_exp = -15
     cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)     # Exposure values follow power or 2's Ex: -1 => 2^-1 => 1/2s
