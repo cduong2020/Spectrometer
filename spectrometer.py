@@ -105,6 +105,59 @@ def closest(lst, K):
 
 #############################################################
 #
+# Spectrum Capture Function
+# - Returns nothing
+# - images are stored in '.images/captures'
+# - merged final image is stored in ',images/exposureFusion.bmp'
+#
+#############################################################
+
+# https://docs.opencv.org/master/d3/db7/tutorial_hdr_imaging.html
+# https://learnopencv.com/exposure-fusion-using-opencv-cpp-python/
+# https://www.scitepress.org/Papers/2014/50872/50872.pdf
+def captureSpectrum():
+    cam = cv2.VideoCapture(0)       # Selects Camera Input 0, 1, 2...
+
+    img_exp = -15
+    cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)     # Exposure values follow power or 2's Ex: -1 => 2^-1 => 1/2s
+    
+    # manual gain and brightness may not be needed
+    # if it is we will need a way to determine values
+    # cam.set(cv2.CAP_PROP_GAIN, 1000)
+    # cam.set(cv2.CAP_PROP_BRIGHTNESS, 0)
+
+    img_counter = 0
+    pics = []
+    for img_counter in range(11):
+        ret, frame = cam.read()
+        if not ret:
+            print("failed to grab frame")
+            break
+        pics.append(frame)
+        img_name = "frame_{}.bmp".format(img_counter)
+        cv2.imwrite('./images/captures/'+img_name, frame)
+        print("{} written!".format(img_name))
+        img_counter += 1
+        img_exp += 1
+        cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)
+    
+
+    # Align input images
+    alignMTB = cv2.createAlignMTB()
+    alignMTB.process(pics, pics)
+    mergeMertens = cv2.createMergeMertens()
+    exposureFusion = mergeMertens.process(pics)
+
+    cv2.imwrite("images/exposureFusion.bmp",exposureFusion*255)
+
+    cam.release()
+
+    cv2.destroyAllWindows()
+    return
+
+
+#############################################################
+#
 # Laser Calbration Function
 # - Returns avg_Y, FWHM: [.., .. ,..], linearEq: [m, b]
 #
