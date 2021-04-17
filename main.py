@@ -309,22 +309,22 @@ sys.exit(app.exec_())
     # Methods
         # calibrateSimple()*****
             # notebook - OK
-            # Turn it to method
+            # Turn it to method - OK
             # receives the 3 laser pictures with respective wavelenghts
             # returns parameters a and b of wavelenght = a * pixelX + b
         # calibrateAdvanced()*****
-            # notebook
-            # Turn it to method
+            # notebook - OK
+            # Turn it to method - OK
             # receives the 1 laser flourescent with respective wavelenghts, a and b parameters
             # returns parameters of non-linear
         # analyze()*****
-            # need to do notebook
+            # notebook - OK
             # receives parameters,spectrum picture
             # returns wavelenght list and plot (Call intensityPlot()???)
         # resize()***
             # Image resizing -> this is important to display picture on the app ( PIL library,cobtours+crop image) (dont change original) make a method
         # getReport()****
-            # pdf report of the data with date and time
+            # pdf/excel report of the data with date and time
             # receives the laser colors and wavelenghts, parameter a and b, spectrum image, wavelenght list and plot
 
     # Interface Design
@@ -332,11 +332,11 @@ sys.exit(app.exec_())
             # Add a button calibrate - OK
                 # if clicked show a pop up window (Calibrate Settings) - OK
                     # text with instructions on how to calibrate
-                    # label color followed by a user input line
+                    # label color followed by a user input line - OK
                     # label wavelenght followed by insert multiples inputs line
-                    # button Next Image
+                    # button Next Image - OK
                         # -> when clicked goes back to capture tab and closes the popup window
-                    # button Done
+                    # button Done - OK
                         # -> when clicked set varible calibrationtype="", perfom the calculations of the parameters from calibration, popups a message and goes back to capture tab, closes calibration popup window
                     # status bar to help user navigate
             # analysis button functionality
@@ -360,3 +360,5 @@ sys.exit(app.exec_())
 # DETAILS
     # set title to sections (using QGroupBox layouts) tab1 - OK, tab2 - OK
     # Organize tab2 layout better (widgets size and placement)  - OK
+    # disable button DONE on the calibration tab until you have at least 3 pictures taken
+    
