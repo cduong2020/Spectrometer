@@ -138,7 +138,7 @@ def captureSpectrum():
         cv2.imwrite('./images/captures/'+img_name, frame)
         print("{} written!".format(img_name))
         img_counter += 1
-        img_exp += 1
+        img_exp += 2
         cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)
     
 
