@@ -95,6 +95,12 @@ def distance(point1,point2):
     return sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
 
 
+def closest(lst, K):
+      
+     lst = np.asarray(lst)
+     idx = (np.abs(lst - K)).argmin()
+     return idx
+
 
 
 #############################################################
@@ -165,9 +171,53 @@ def analyzeSpectrum(image, row, isLinear):
     if isLinear:
         for val in x_coords:
             wavelengths.append(val*linearEq[0]+linearEq[1])
+    else:
+        for val in x_coords:
+            wavelengths.append(pow(val,3)*cubicEq[0] + pow(val,2)*cubicEq[1] + val*cubicEq[2] + cubicEq[3])
+
 
     # Create Intensity Array
     intensity = []
     for i in peaks:
         intensity.append(convolved[i])
     return x_coords[:50], wavelengths[:50], intensity[:50]
+
+
+#############################################################
+#
+# NonLinearCalibration
+# - Analyzes fluorescent spectrum for cubic mapping/fit function
+# - Returns cubicEq --> array
+#
+#############################################################
+
+def nonLinearCalibration():
+    # set the to desired florescent wavelength values to observe
+    peak_values = [404.656, 435.833, 546.074, 611.878]
+    x_coords, wavelengths, intensity = analyzeSpectrum(spectrum, avg_Y, True)
+
+    # get postion of the wavelengths
+    wavelengths_index = []
+
+    wavelengths_index.append(closest(wavelengths, peak_values[0]))
+    wavelengths_index.append(closest(wavelengths, peak_values[1]))
+    wavelengths_index.append(closest(wavelengths, peak_values[2]))
+    wavelengths_index.append(closest(wavelengths, peak_values[3]))
+    
+    print("Postion of the closest wavelength values")
+    print(wavelengths_index)
+
+    new_xCoords = []
+
+    for i in wavelengths_index:
+        new_xCoords.append(x_coords[i])
+    
+    print("Position of the updated pixel coordinates (x-values)")
+    print(new_xCoords)
+
+    nonLinearEq = np.polyfit(new_xCoords, peak_values, 3)
+
+    print("Nonlinear Equation Values")
+    print(nonLinearEq)
+    
+    return nonLinearEq
