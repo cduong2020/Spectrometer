@@ -122,6 +122,7 @@ def captureSpectrum():
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
     img_exp = -15
+    cam.set(cv2.CAP_PROP_AUTO_EXPOSURE,0.25) # turn off auto exposure
     cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)     # Exposure values follow power or 2's Ex: -1 => 2^-1 => 1/2s
     
     # manual gain and brightness may not be needed
@@ -150,11 +151,14 @@ def captureSpectrum():
     alignMTB.process(pics, pics)
     mergeMertens = cv2.createMergeMertens()
     exposureFusion = mergeMertens.process(pics)
-
     cv2.imwrite("images/exposureFusion.bmp",exposureFusion*255)
-
+    
+    img= cv2.imread("images/exposureFusion.bmp")
+    dst = cv2.fastNlMeansDenoisingColored(img,None,5,5,7,21) #h(for luminance component)=5 hColor (for color component)=5 tempWindowSize= 7 (default) searchWindowSize = 21 (default) 
+    img_name = "images/denoise_frame.bmp"
+    cv2.imwrite(img_name, dst)
+    
     cam.release()
-
     cv2.destroyAllWindows()
     return
 
