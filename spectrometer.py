@@ -121,7 +121,7 @@ def captureSpectrum():
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-    img_exp = -15
+    img_exp = -10
     cam.set(cv2.CAP_PROP_AUTO_EXPOSURE,0.25) # turn off auto exposure
     cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)     # Exposure values follow power or 2's Ex: -1 => 2^-1 => 1/2s
     
@@ -142,7 +142,7 @@ def captureSpectrum():
         cv2.imwrite('./images/captures/'+img_name, frame)
         print("{} written!".format(img_name))
         img_counter += 1
-        img_exp += 2
+        img_exp += 0.5
         cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)
     
 
