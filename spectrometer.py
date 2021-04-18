@@ -132,7 +132,7 @@ def captureSpectrum():
 
     img_counter = 0
     pics = []
-    for img_counter in range(11):
+    for img_counter in range(20):
         ret, frame = cam.read()
         if not ret:
             print("failed to grab frame")
