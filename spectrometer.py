@@ -115,13 +115,18 @@ def closest(lst, K):
 # https://docs.opencv.org/master/d3/db7/tutorial_hdr_imaging.html
 # https://learnopencv.com/exposure-fusion-using-opencv-cpp-python/
 # https://www.scitepress.org/Papers/2014/50872/50872.pdf
-def captureSpectrum():
+def captureSpectrum(isLaser):
     cam = cv2.VideoCapture(0)       # Selects Camera Input 0, 1, 2...
     
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-    img_exp = -10
+    img_exp = -9
+    img_count = 20
+    if (isLaser):
+        img_exposure = -13
+        img_count = 12
+    
     cam.set(cv2.CAP_PROP_AUTO_EXPOSURE,0.25) # turn off auto exposure
     cam.set(cv2.CAP_PROP_EXPOSURE, img_exp)     # Exposure values follow power or 2's Ex: -1 => 2^-1 => 1/2s
     
@@ -132,7 +137,7 @@ def captureSpectrum():
 
     img_counter = 0
     pics = []
-    for img_counter in range(20):
+    for img_counter in range(img_count):
         ret, frame = cam.read()
         if not ret:
             print("failed to grab frame")
